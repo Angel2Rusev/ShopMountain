@@ -1,0 +1,63 @@
+@model List<PROJECT_ANGEL.Models.Product>
+@{
+    ViewData["Title"] = "Mountain Equipment Shop";
+}
+
+<div class="shop-container">
+    <div class="shop-header">
+        <h1>Mountain Equipment Shop</h1>
+        <p>Professional gear for your adventures</p>
+    </div>
+
+    <div class="filters">
+        <form method="get" asp-action="Index" class="filter-form">
+            <div class="search-box">
+                <input type="text" name="search" placeholder="Search products..." value="@ViewBag.SearchTerm" />
+                <button type="submit">Search</button>
+            </div>
+            
+            <div class="category-filter">
+                <select name="category" onchange="this.form.submit()">
+                    <option value="">All Categories</option>
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category" selected="@(ViewBag.SelectedCategory == category ? "selected" : null)">@category</option>
+                    }
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <div class="products-grid">
+        @foreach (var product in Model)
+        {
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="@product.ImageUrl" alt="@product.Name" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'" />
+                </div>
+                <div class="product-info">
+                    <h3>@product.Name</h3>
+                    <p class="product-category">@product.Category</p>
+                    <p class="product-description">@product.Description</p>
+                    <div class="product-footer">
+                        <span class="product-price">$@product.Price.ToString("F2")</span>
+                        <form method="post" asp-controller="Cart" asp-action="AddToCart">
+                            <input type="hidden" name="productId" value="@product.Id" />
+                            <input type="hidden" name="productName" value="@product.Name" />
+                            <input type="hidden" name="price" value="@product.Price" />
+                            <input type="hidden" name="imageUrl" value="@product.ImageUrl" />
+                            <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="no-products">
+            <p>No products found matching your criteria.</p>
+        </div>
+    }
+</div>

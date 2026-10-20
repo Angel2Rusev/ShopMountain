@@ -1,0 +1,98 @@
+@model PROJECT_ANGEL.Models.Order
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="checkout-container">
+    <h1>Checkout</h1>
+
+    <div class="checkout-content">
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div class="order-items">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="order-item">
+                        <div class="order-item-image">
+                            <img src="@item.ImageUrl" alt="@item.ProductName" onerror="this.src='https://via.placeholder.com/60x60?text=No+Image'" />
+                        </div>
+                        <div class="order-item-details">
+                            <h4>@item.ProductName</h4>
+                            <p>Qty: @item.Quantity × $@item.Price.ToString("F2")</p>
+                        </div>
+                        <div class="order-item-total">
+                            <p>$@((item.Price * item.Quantity).ToString("F2"))</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="order-total">
+                <h3>Total: $@Model.TotalAmount.ToString("F2")</h3>
+            </div>
+        </div>
+
+        <div class="checkout-form">
+            <h2>Shipping Information</h2>
+            <form method="post" asp-action="ProcessOrder">
+                <div class="form-group">
+                    <label asp-for="FirstName">First Name</label>
+                    <input asp-for="FirstName" required />
+                    <span asp-validation-for="FirstName" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LastName">Last Name</label>
+                    <input asp-for="LastName" required />
+                    <span asp-validation-for="LastName" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" type="email" required />
+                    <span asp-validation-for="Email" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Address">Address</label>
+                    <input asp-for="Address" required />
+                    <span asp-validation-for="Address" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="City">City</label>
+                    <input asp-for="City" required />
+                    <span asp-validation-for="City" class="error-message"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="ZipCode">Zip Code</label>
+                        <input asp-for="ZipCode" required />
+                        <span asp-validation-for="ZipCode" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Country">Country</label>
+                        <input asp-for="Country" required />
+                        <span asp-validation-for="Country" class="error-message"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PaymentMethod">Payment Method</label>
+                    <select asp-for="PaymentMethod" required>
+                        <option value="">Select payment method</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="PayPal">PayPal</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                    </select>
+                    <span asp-validation-for="PaymentMethod" class="error-message"></span>
+                </div>
+
+                <div class="checkout-actions">
+                    <a asp-controller="Cart" asp-action="Index" class="back-to-cart-btn">Back to Cart</a>
+                    <button type="submit" class="place-order-btn">Place Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

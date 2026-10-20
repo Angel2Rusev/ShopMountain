@@ -1,0 +1,62 @@
+@model List<PROJECT_ANGEL.Models.CartItem>
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="cart-container">
+    <h1>Shopping Cart</h1>
+
+    @if (Model.Count == 0)
+    {
+        <div class="empty-cart">
+            <p>Your cart is empty.</p>
+            <a asp-controller="Shop" asp-action="Index" class="continue-shopping-btn">Continue Shopping</a>
+        </div>
+    }
+    else
+    {
+        <div class="cart-items">
+            @foreach (var item in Model)
+            {
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        <img src="@item.ImageUrl" alt="@item.ProductName" onerror="this.src='https://via.placeholder.com/100x100?text=No+Image'" />
+                    </div>
+                    <div class="cart-item-details">
+                        <h3>@item.ProductName</h3>
+                        <p class="cart-item-price">$@item.Price.ToString("F2")</p>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <form method="post" asp-action="UpdateQuantity" class="quantity-form">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <input type="number" name="quantity" value="@item.Quantity" min="1" max="10" onchange="this.form.submit()" />
+                        </form>
+                    </div>
+                    <div class="cart-item-total">
+                        <p>$@((item.Price * item.Quantity).ToString("F2"))</p>
+                    </div>
+                    <div class="cart-item-actions">
+                        <form method="post" asp-action="RemoveFromCart">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <button type="submit" class="remove-btn">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="cart-summary">
+            <div class="cart-total">
+                <h3>Cart Total</h3>
+                <p class="total-amount">$@Model.Sum(item => item.Price * item.Quantity).ToString("F2")</p>
+            </div>
+            <div class="cart-actions">
+                <a asp-controller="Shop" asp-action="Index" class="continue-shopping-btn">Continue Shopping</a>
+                <form method="post" asp-action="ClearCart" class="clear-cart-form">
+                    <button type="submit" class="clear-cart-btn">Clear Cart</button>
+                </form>
+                <a asp-controller="Checkout" asp-action="Index" class="checkout-btn">Proceed to Checkout</a>
+            </div>
+        </div>
+    }
+</div>
