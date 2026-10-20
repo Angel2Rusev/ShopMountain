@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using PROJECT_ANGEL.Data;
+
 namespace PROJECT_ANGEL
 {
     public class Program
@@ -8,6 +11,10 @@ namespace PROJECT_ANGEL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Configure SQLite database
+            builder.Services.AddDbContext<ShopDbContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
