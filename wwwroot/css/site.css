@@ -608,3 +608,21 @@ body {
     width: 100%;
   }
 }
+body {
+    /* Replace with your image URL or local path like '/images/mountain-bg.jpg' */
+    background-image: url('https://images.squarespace-cdn.com/content/v1/57825361440243db4a4b7830/1643371741134-EJ0TKJ2EIHBRV36YECJS/EkxulNPXUAILxuq.jpeg?format=2500w');
+    background-size: cover; /* Cover the entire window */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent tiling */
+    background-attachment: fixed; /* Keeps background stationary while scrolling */
+}
+
+/* Optional: Add a semi-transparent container card so text remains readable */
+.shop-container {
+    background-color: rgba(255, 255, 255, 0.92); /* White card with 92% opacity */
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
